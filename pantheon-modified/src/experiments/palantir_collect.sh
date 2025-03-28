@@ -18,7 +18,7 @@ test_del_list="5"
 bw_array=`echo $(seq 6 6 192) | xargs`
 del_array="2 5 10 20 25 40 50 75 80 100 150 200"
 
-for cc in "${schemes[@]}"; do
+for cc in "${schemes[@]}"
 do
     for loss in $loss_list
     do
