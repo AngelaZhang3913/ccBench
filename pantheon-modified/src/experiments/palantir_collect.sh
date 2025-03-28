@@ -5,18 +5,20 @@ pids=""
 sys_cpu_cnt=`lscpu | grep "^CPU(s):" | awk '{print $2}'`
 cnt=0
 
-schemes="reno pure cubic vegas bbr cdg hybla highspeed illinois westwood yeah htcp bic veno"
+schemes=($@)  # Read schemes assigned to this node
 smaller_schemes="reno cubic vegas bbr"
 test_schemes="vegas"
 
 loss_list="0"
-bw_list="12 24 48 96 192"
+# bw_list="12 24 48 96 192"
 test_bw_list="12"
-del_list="5 10 20 40 80"
+# del_list="5 10 20 40 80"
 test_del_list="5"
 
+bw_array=`echo $(seq 6 6 192) | xargs`
+del_array="2 5 10 20 25 40 50 75 80 100 150 200"
 
-for cc in $schemes
+for cc in "${schemes[@]}"; do
 do
     for loss in $loss_list
     do
@@ -33,7 +35,7 @@ do
             for del in $del_list
             do
                 bdp=$((del*bw/6))
-                for qs in $((bdp/2)) $bdp $((2*bdp)) $((4*bdp)) $((8*bdp)) $((16*bdp))
+                for qs in $((bdp/2)) $bdp $((2*bdp)) $((4*bdp)) $((5*bdp)) $((8*bdp)) $((16*bdp))
                 do
                     for dl_post in ""
                     do
@@ -51,7 +53,7 @@ do
                         scales="2 4"
                     elif [ $bw -lt 100 ]
                     then
-                        scales="2 4"
+                        scales="2"
                     elif [ $bw -lt 200 ]
                     then
                         scales=""
