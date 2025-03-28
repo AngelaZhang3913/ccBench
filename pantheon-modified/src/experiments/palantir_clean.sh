@@ -16,5 +16,6 @@ do
 done
 CMT
 
-mv data/* /mydata/ccbench-logs/
+rsync -av --remove-source-files data/ /mydata/ccbench-logs/
+find data/ -type d -empty -delete  # Remove empty directories
 mv ../../third_party/tcpdatagen/dataset/* /mydata/ccbench-traces/

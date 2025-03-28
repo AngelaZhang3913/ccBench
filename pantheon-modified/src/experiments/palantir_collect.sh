@@ -1,6 +1,7 @@
 
 time=30
 ./system_setup.sh
+./palantir_clean.sh
 pids=""
 sys_cpu_cnt=`lscpu | grep "^CPU(s):" | awk '{print $2}'`
 cnt=0
