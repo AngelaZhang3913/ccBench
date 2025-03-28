@@ -34,7 +34,7 @@ down=$downl
 log=${comment}-$scheme-$down-$lat-$qs-$loss
 echo "************************ Running $log *********************************"
 
-python2.7 test.py local --schemes tcpdatagen --uplink-trace traces/$down --downlink-trace traces/$upl -t $time \
+python2.7 test.py local --schemes tcpdatagen --uplink-trace mahimahi_traces/$down --downlink-trace mahimahi_traces/$upl -t $time \
 --extra-mm-link-args "--uplink-queue=droptail --uplink-queue-args=\"packets=$qs\" --downlink-queue=droptail --downlink-queue-args=\"packets=$qs" \
 --prepend-mm-cmds " mm-loss uplink $loss mm-loss downlink $loss mm-delay $lat " \
 --setup_time $setup_time --orcalearn 4 --random-order -f $num_of_flows --interval $interval --run-times $num_times --data-dir data/$log  \
