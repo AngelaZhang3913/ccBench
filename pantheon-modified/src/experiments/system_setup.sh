@@ -24,7 +24,7 @@ sudo sysctl -w -q fs.inotify.max_user_instances=524288
 # Enabling CCs
 sudo sysctl -w net.ipv4.tcp_congestion_control=vegas
 sudo sysctl -w net.ipv4.tcp_congestion_control=bbr
-sudo sysctl -w net.ipv4.tcp_congestion_control=bbr2
+# sudo sysctl -w net.ipv4.tcp_congestion_control=bbr2
 sudo sysctl -w net.ipv4.tcp_congestion_control=reno
 sudo sysctl -w net.ipv4.tcp_congestion_control=cdg
 sudo sysctl -w net.ipv4.tcp_congestion_control=hybla
