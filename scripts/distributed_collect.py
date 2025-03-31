@@ -1,10 +1,9 @@
-#!/usr/bin/env python3
-
 import paramiko
 import yaml
 import concurrent.futures
 import argparse
 import time
+import os
 
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description="Distribute congestion control collection across nodes")
@@ -45,27 +44,19 @@ def run_remote_collection(server, schemes):
     try:
         client.connect(server, username=username)
 
-        # Join schemes into a space-separated string to pass as argument
         schemes_str = " ".join(schemes)
 
         commands = [
             "tmux kill-session -t collect || true",  # Kill existing session if any
-            
-            # Ensure Pantheon-modified is installed
             "cd ~/ccBench/ && git reset --hard && git fetch && git checkout dataset-collection && git pull",
-            "cd ~/ccBench/pantheon-modified/third_party/pantheon-tunnel/ && chmod +x autogen.sh",
-            "cd ~/ccBench/pantheon-modified/tools/ && chmod +x install_deps.sh && ./install_deps.sh",
-            "cd ~/ccBench/pantheon-modified/ && chmod +x src/experiments/setup.py",
-            "cd ~/ccBench/pantheon-modified/src/wrappers/ && chmod +x *.py",
-            "cd ~/ccBench/pantheon-modified/ && src/experiments/setup.py --install-deps --all",
-            "cd ~/ccBench/pantheon-modified/src/experiments/ && chmod +x *.sh && chmod +x *.py",
             "cd ~/ccBench/pantheon-modified/third_party/tcpdatagen/ && chmod +x *.sh && ./build.sh",
-            
-            # Start tmux session and run the collection
+            "chmod +x /users/janechen/ccBench/pantheon-modified/src/experiments/palantir_collect.sh",
+            "rm -rf ~/ccBench/mahimahi_traces/*",
             "tmux new-session -d -s collect",
-            "tmux send-keys -t collect 'source ~/venv/bin/activate' C-m",  # Activate virtual environment
-            "tmux send-keys -t collect 'cd /users/janechen/ccBench/pantheon-modified/src/experiments' C-m",
-            "tmux send-keys -t collect 'python /users/janechen/ccBench/scripts/generate_mahimahi_traces.py' C-m",  # Set PYTHONPATH
+            "tmux send-keys -t collect 'source ~/venv/bin/activate' C-m",
+            # "tmux send-keys -t collect 'python /users/janechen/ccBench/scripts/convert_real_to_mahimahi.py' C-m",
+            # "tmux send-keys -t collect 'cd /users/janechen/ccBench/pantheon-modified/src/experiments' C-m",
+            # "tmux send-keys -t collect 'python /users/janechen/ccBench/scripts/generate_mahimahi_traces.py' C-m",
             f"tmux send-keys -t collect './palantir_collect.sh {schemes_str}' C-m"
         ]
 
