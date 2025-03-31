@@ -1,0 +1,11 @@
+servers:
+  - hostname: c220g5-110401.wisc.cloudlab.us
+  - hostname: c220g5-110414.wisc.cloudlab.us
+  - hostname: c220g5-110410.wisc.cloudlab.us
+  - hostname: c240g5-110217.wisc.cloudlab.us
+  - hostname: c240g5-110219.wisc.cloudlab.us
+  - hostname: c220g5-110432.wisc.cloudlab.us
+  - hostname: c220g5-110428.wisc.cloudlab.us
+  - hostname: c220g5-110407.wisc.cloudlab.us
+  - hostname: c220g5-110425.wisc.cloudlab.us
+  - hostname: c220g5-110424.wisc.cloudlab.us
