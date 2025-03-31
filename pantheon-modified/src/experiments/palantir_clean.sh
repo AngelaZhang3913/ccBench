@@ -26,7 +26,7 @@ else
 fi
 
 # Move dataset files if they exist
-if [ -d "../../third_party/tcpdatagen/dataset" ]; then
+if [ -d "../../third_party/tcpdatagen/dataset" ] && [ "$(ls -A ../../third_party/tcpdatagen/dataset)" ]; then
     mkdir -p /mydata/ccbench-traces  # Ensure destination exists
     mv ../../third_party/tcpdatagen/dataset/* /mydata/ccbench-traces/
 else

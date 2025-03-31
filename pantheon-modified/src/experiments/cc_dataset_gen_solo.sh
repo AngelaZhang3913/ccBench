@@ -1,4 +1,4 @@
-if [ $# -ne 12 ]
+if [ $# -ne 13 ]
 then
     echo "usage:$0 scheme [kernel based TCPs: vegas bbr reno cubic ...] [log comment] [num of flows] [num of runs] [interval bw flows] [one-way delay] [qs] [loss] [down link] [duration] [BW (Mbps)] [BW2 (Mbps)]"
     exit
@@ -17,6 +17,7 @@ downlink=$9
 duration=${10}
 bw=${11}
 bw2=${12}
+real_trace_flag=${13:-false}  # Default to false if not specified
 trace_period=7
 setup_time=2
 
@@ -25,8 +26,13 @@ basetimestamp_fld="$basetimestamp_fld\/data"
 
 loss="$loss_"
 dl=$downlink
-downl="wired${dl}"
-upl=$downl
+if [ "$real_trace_flag" == "true" ]; then
+    downl="$dl"
+    upl="$dl"
+else
+    downl="wired${dl}"
+    upl=$downl
+fi
 lat=$delay
 qs=$qs_
 time=$duration
@@ -34,7 +40,7 @@ down=$downl
 log=${comment}-$scheme-$down-$lat-$qs-$loss
 echo "************************ Running $log *********************************"
 
-python2.7 test.py local --schemes tcpdatagen --uplink-trace mahimahi_traces/$down --downlink-trace mahimahi_traces/$upl -t $time \
+python2.7 test.py local --schemes tcpdatagen --uplink-trace $HOME/ccBench/mahimahi_traces/$down --downlink-trace $HOME/ccBench/mahimahi_traces/$upl -t $time \
 --extra-mm-link-args "--uplink-queue=droptail --uplink-queue-args=\"packets=$qs\" --downlink-queue=droptail --downlink-queue-args=\"packets=$qs" \
 --prepend-mm-cmds " mm-loss uplink $loss mm-loss downlink $loss mm-delay $lat " \
 --setup_time $setup_time --orcalearn 4 --random-order -f $num_of_flows --interval $interval --run-times $num_times --data-dir data/$log  \
