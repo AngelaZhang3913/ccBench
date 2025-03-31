@@ -326,6 +326,15 @@ void* TimerThread(void* information)
 
     return((void *)0);
 }
+
+void replaceSlashWithUnderscore(char* str) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] == '/') {
+            str[i] = '_';
+        }
+    }
+}
+
 void* CntThread(void* information)
 {
 //    printf("testing\n");
@@ -387,6 +396,7 @@ void* CntThread(void* information)
     int fairness_phase_cnt=0;
 
     char file_name[1000];
+    replaceSlashWithUnderscore(log_file);
     sprintf(file_name,"%s/../dataset/%s_%s_cwnd.txt",path,scheme,log_file);
     ofstream measurement_file(file_name);
 
