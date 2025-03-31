@@ -9,7 +9,7 @@ MILLISECONDS_IN_SECOND = 1000  # Number of milliseconds in a second
 
 # Directories
 TRACE_DIR = os.path.expanduser("~/Genet/cc_trace")
-OUTPUT_DIR = os.path.expanduser("~/ccBench/mahimahi_real_traces")
+OUTPUT_DIR = os.path.expanduser("~/ccBench/mahimahi_traces/real/")
 
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
