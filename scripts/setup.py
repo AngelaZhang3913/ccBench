@@ -109,6 +109,7 @@ def setup_server(server_config):
         "cd ~/ccBench/pantheon-modified/ && src/experiments/setup.py --install-deps --all",
         "cd ~/ccBench/pantheon-modified/src/experiments/ && chmod +x *.sh && chmod +x *.py",
         "cd ~/ccBench/pantheon-modified/third_party/tcpdatagen/ && chmod +x *.sh && ./build.sh",
+        "cd ~ && git clone https://github.com/Janecjy/Genet.git || (cd Genet && git pull)",
     ]
 
     # Run commands before reboot

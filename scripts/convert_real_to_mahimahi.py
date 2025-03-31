@@ -28,25 +28,21 @@ def convert_json_to_mahimahi(json_file, output_file):
         print(f"Skipping {json_file} due to missing data.")
         return
     
-    millisec_time = 0
-    pkt_count = 0
     with open(output_file, 'w') as mf:
-        for i in range(len(timestamps)):
-            if i == 0:
-                continue  # Skip first timestamp since no interval exists
-            
-            duration = (timestamps[i] - timestamps[i - 1]) * MILLISECONDS_IN_SECOND
+        for i in range(len(timestamps) - 1):
+            start_time = int(timestamps[i] * MILLISECONDS_IN_SECOND)
+            end_time = int(timestamps[i + 1] * MILLISECONDS_IN_SECOND)
             bandwidth_mbps = bandwidths[i]
+            
             mbps_to_bps = bandwidth_mbps * 1e6  # Convert Mbps to bps
             bps_to_Bps = mbps_to_bps / BITS_IN_BYTE  # Convert bps to Bps
             Bps_to_pkts = bps_to_Bps / BYTES_PER_PKT  # Convert Bps to packets per sec
             pkt_per_millisec = Bps_to_pkts / MILLISECONDS_IN_SECOND  # Convert to packets per ms
             
-            for _ in range(int(np.floor(duration * pkt_per_millisec)) - pkt_count):
-                mf.write(f"{millisec_time}\n")
-                millisec_time += 1
-            
-            pkt_count += int(duration * pkt_per_millisec)
+            for t in range(start_time, end_time):
+                num_packets = int(np.floor((t + 1) * pkt_per_millisec)) - int(np.floor(t * pkt_per_millisec))
+                for _ in range(num_packets):
+                    mf.write(f"{t}\n")
     
     print(f"Converted {json_file} -> {output_file}")
 
