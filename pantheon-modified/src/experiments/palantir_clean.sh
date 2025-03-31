@@ -16,6 +16,19 @@ do
 done
 CMT
 
-rsync -av --remove-source-files data/ /mydata/ccbench-logs/
-find data/ -type d -empty -delete  # Remove empty directories
-mv ../../third_party/tcpdatagen/dataset/* /mydata/ccbench-traces/
+# Rsync logs only if 'data/' exists
+if [ -d "data" ]; then
+    mkdir -p /mydata/ccbench-logs  # Ensure destination exists
+    rsync -av --remove-source-files data/ /mydata/ccbench-logs/
+    find data/ -type d -empty -delete  # Remove empty directories
+else
+    echo "Warning: 'data/' directory does not exist. Skipping rsync."
+fi
+
+# Move dataset files if they exist
+if [ -d "../../third_party/tcpdatagen/dataset" ]; then
+    mkdir -p /mydata/ccbench-traces  # Ensure destination exists
+    mv ../../third_party/tcpdatagen/dataset/* /mydata/ccbench-traces/
+else
+    echo "Warning: '../../third_party/tcpdatagen/dataset/' does not exist. Skipping dataset move."
+fi
