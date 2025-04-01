@@ -38,6 +38,13 @@ qs=$qs_
 time=$duration
 down=$downl
 log=${comment}-$scheme-$down-$lat-$qs-$loss
+
+output_file="/mydata/ccbench-traces/${scheme}_${down}_${lat}_${qs}_${loss}_cwnd.txt"
+if [ -f "$output_file" ]; then
+    echo "Output file $output_file already exists. Skipping execution."
+    exit
+fi
+
 echo "************************ Running $log *********************************"
 
 python2.7 test.py local --schemes tcpdatagen --uplink-trace $HOME/ccBench/mahimahi_traces/$down --downlink-trace $HOME/ccBench/mahimahi_traces/$upl -t $time \
