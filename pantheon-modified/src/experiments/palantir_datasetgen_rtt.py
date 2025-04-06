@@ -69,7 +69,9 @@ def process_one_file(filepath):
         seen.add(start)
         sample = build_sample(lines, start, two_owd)
         if sample is not None:
-            file_data.append(sample)
+            # Check if the sample has any NaNs
+            if not np.isnan(sample).any():
+                file_data.append(sample)
         attempts += 1
 
     if file_data:
