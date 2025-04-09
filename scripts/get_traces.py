@@ -45,21 +45,6 @@ def check_traces_and_launch_zip(server, idx):
 
         print(f"[{hostname}] Trace file count: TOTAL={total_count}, REAL={real_count}")
 
-
-        # tmux_commands = [
-        #     f"tmux kill-session -t {tmux_session} || true",
-        #     f"tmux new-session -d -s {tmux_session}",
-        #     f"tmux send-keys -t {tmux_session} 'cd /mydata' C-m",
-        #     f"tmux send-keys -t {tmux_session} 'zip -rq ccbench-traces.zip ccbench-traces' C-m"
-        # ]
-
-        # for cmd in tmux_commands:
-        #     print(f"[{hostname}] TMUX: {cmd}")
-        #     client.exec_command(cmd)
-        #     time.sleep(0.3)
-
-        print(f"[{hostname}] Zip command launched in tmux.")
-
         if args.collect:
             # Wait a bit in case zip just started (you may want to poll in production)
             print(f"[{hostname}] Waiting for possible zip file to appear...")
@@ -72,7 +57,12 @@ def check_traces_and_launch_zip(server, idx):
 
             local_dest = f"{args.target_path}/ccbench-traces-node{idx}.zip"
             remote_file = f"{username}@{hostname}:{zip_path}"
-            scp_cmd = ["scp", "-3", remote_file, local_dest]
+            scp_cmd = [
+                "scp",
+                "-o", "StrictHostKeyChecking=no",
+                "-o", "UserKnownHostsFile=/dev/null", 
+                remote_file, 
+                local_dest]
 
             print(f"[{hostname}] Attempting SCP to {local_dest}")
             try:
@@ -80,6 +70,20 @@ def check_traces_and_launch_zip(server, idx):
                 print(f"[{hostname}] SCP complete")
             except subprocess.CalledProcessError:
                 print(f"[{hostname}] SCP failed: Zip might not be ready yet")
+        else:
+            tmux_commands = [
+                f"tmux kill-session -t {tmux_session} || true",
+                f"tmux new-session -d -s {tmux_session}",
+                f"tmux send-keys -t {tmux_session} 'cd /mydata' C-m",
+                f"tmux send-keys -t {tmux_session} 'zip -rq ccbench-traces.zip ccbench-traces' C-m"
+            ]
+
+            for cmd in tmux_commands:
+                print(f"[{hostname}] TMUX: {cmd}")
+                client.exec_command(cmd)
+                time.sleep(0.3)
+                
+            print(f"[{hostname}] Zip command launched in tmux.")
 
     except Exception as e:
         print(f"[{hostname}] ERROR: {e}")
@@ -88,16 +92,19 @@ def check_traces_and_launch_zip(server, idx):
 
 
 if __name__ == "__main__":
-    with concurrent.futures.ThreadPoolExecutor(max_workers=len(servers)) as executor:
-        futures = {
-            executor.submit(check_traces_and_launch_zip, server, idx): server["hostname"]
-            for idx, server in enumerate(servers)
-        }
-        for future in concurrent.futures.as_completed(futures):
-            hostname = futures[future]
-            try:
-                future.result()
-            except Exception as e:
-                print(f"[{hostname}] FAILED: {e}")
+    # with concurrent.futures.ThreadPoolExecutor(max_workers=len(servers)) as executor:
+    #     futures = {
+    #         executor.submit(check_traces_and_launch_zip, server, idx): server["hostname"]
+    #         for idx, server in enumerate(servers)
+    #     }
+    #     for future in concurrent.futures.as_completed(futures):
+    #         hostname = futures[future]
+    #         try:
+    #             future.result()
+    #         except Exception as e:
+    #             print(f"[{hostname}] FAILED: {e}")
+                
+    for idx, server in enumerate(servers):
+        check_traces_and_launch_zip(server, idx)
 
     print("All trace operations completed.")
