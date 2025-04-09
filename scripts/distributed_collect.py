@@ -46,17 +46,38 @@ def run_remote_collection(server, schemes):
 
         schemes_str = " ".join(schemes)
 
+        # Check and unzip traces if necessary
+        unzip_command = (
+            "if [ -f /mydata/traces-1.zip ]; then "
+            "cd /mydata && unzip traces-1.zip && "
+            "mv /mydata/mydata/ccbench-traces/ /mydata/ && "
+            "rm -rf /mydata/mydata/; "
+            "fi"
+        )
+
         commands = [
+            # unzip_command,
+            "cd ~ && git clone https://github.com/Janecjy/Genet.git || (cd Genet && git pull)",
             "tmux kill-session -t collect || true",  # Kill existing session if any
-            "cd ~/ccBench/ && git reset --hard && git fetch && git checkout dataset-collection && git pull",
-            "cd ~/ccBench/pantheon-modified/third_party/tcpdatagen/ && chmod +x *.sh && ./build.sh",
-            "chmod +x /users/janechen/ccBench/pantheon-modified/src/experiments/palantir_collect.sh",
+            # "cd ~/ccBench/ && git reset --hard && git fetch && git checkout dataset-collection && git pull",
+            # "cd ~/ccBench/pantheon-modified/third_party/pantheon-tunnel/ && chmod +x autogen.sh",
+            # "cd ~/ccBench/pantheon-modified/tools/ && chmod +x install_deps.sh && ./install_deps.sh",
+            # "cd ~/ccBench/pantheon-modified/ && chmod +x src/experiments/setup.py",
+            # "cd ~/ccBench/pantheon-modified/src/wrappers/ && chmod +x *.py",
+            # "cd ~/ccBench/pantheon-modified/ && src/experiments/setup.py --install-deps --all",
+            # "cd ~/ccBench/pantheon-modified/src/experiments/ && chmod +x *.sh && chmod +x *.py",
+            # "cd ~/ccBench/pantheon-modified/third_party/tcpdatagen/ && chmod +x *.sh && ./build.sh",
+            # "rm -rf ~/mahimahi_traces/*",
             "rm -rf ~/ccBench/mahimahi_traces/*",
+            # "rm -rf ~/ccBench/pantheon-modified/src/experiments/mahimahi_traces/*",
+            # "rm -rf ~/ccBench/pantheon-modified/tmp/*",
             "tmux new-session -d -s collect",
+            "tmux send-keys -t collect 'cd ~/ccBench' C-m",
             "tmux send-keys -t collect 'source ~/venv/bin/activate' C-m",
-            # "tmux send-keys -t collect 'python /users/janechen/ccBench/scripts/convert_real_to_mahimahi.py' C-m",
-            # "tmux send-keys -t collect 'cd /users/janechen/ccBench/pantheon-modified/src/experiments' C-m",
+            "tmux send-keys -t collect 'python /users/janechen/ccBench/scripts/convert_real_to_mahimahi.py' C-m",
             # "tmux send-keys -t collect 'python /users/janechen/ccBench/scripts/generate_mahimahi_traces.py' C-m",
+            "tmux send-keys -t collect 'deactivate' C-m",
+            "tmux send-keys -t collect 'cd /users/janechen/ccBench/pantheon-modified/src/experiments' C-m",
             f"tmux send-keys -t collect './palantir_collect.sh {schemes_str}' C-m"
         ]
 
