@@ -19,8 +19,8 @@ with open(CONFIG_FILE, "r") as file:
 
 servers = config["servers"]
 username = "janechen"
-dataset_path = "/mydata/ccbench-dataset/6col-rtt-random.p"
-
+dataset_path_synthetic = "/mydata/ccbench-dataset/6col-rtt-20_synthetic.p"
+dataset_path_real = "/mydata/ccbench-dataset/6col-rtt-20_real.p"
 
 def scp_datasetgen_script(server):
     hostname = server["hostname"]
@@ -79,13 +79,17 @@ def run_remote_datasetgen(server):
 
 def collect_dataset_from_node(server, idx):
     hostname = server["hostname"]
-    remote_file = f"{username}@{hostname}:{dataset_path}"
-    dest_file = f"{args.target_path}/6col-rtt-random-node{idx}.p"
-    scp_cmd = ["scp", "-3", remote_file, dest_file]
+    remote_synthetic_file = f"{username}@{hostname}:{dataset_path_synthetic}"
+    dest_file = f"{args.target_path}/6col-rtt-20_synthetic-node{idx}.p"
+    scp_cmd_synthetic = ["scp", "-3", remote_synthetic_file, dest_file]
+    remote_real_file = f"{username}@{hostname}:{dataset_path_real}"
+    dest_file_real = f"{args.target_path}/6col-rtt-20_real-node{idx}.p"
+    scp_cmd_real = ["scp", "-3", remote_real_file, dest_file_real]
 
     print(f"[Node {idx} - {hostname}] Collecting dataset to {dest_file}")
     try:
-        subprocess.run(scp_cmd, check=True)
+        subprocess.run(scp_cmd_synthetic, check=True)
+        subprocess.run(scp_cmd_real, check=True)
         print(f"[Node {idx}] Dataset collected successfully.")
     except subprocess.CalledProcessError as e:
         print(f"[Node {idx}] Failed to collect dataset: {e}")
