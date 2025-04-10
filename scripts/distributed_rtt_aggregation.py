@@ -51,6 +51,7 @@ def run_remote_datasetgen(server):
         commands = [
             "tmux kill-session -t datasetgen || true",
             "mkdir -p /mydata/ccbench-dataset",
+            "rm -rf /mydata/ccbench-dataset/*",
             "tmux new-session -d -s datasetgen",
             "tmux send-keys -t datasetgen 'cd ~/ccBench' C-m",
             "tmux send-keys -t datasetgen 'source ~/venv/bin/activate' C-m",

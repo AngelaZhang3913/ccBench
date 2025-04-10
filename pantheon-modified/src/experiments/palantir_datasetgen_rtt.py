@@ -76,7 +76,7 @@ def process_one_file(filepath):
 
     if file_data:
         print(f"[{fname}] Collected {len(file_data)} valid samples")
-        return np.stack(file_data, axis=0)  # shape (≤50, 20, 6)
+        return os.path.basename(filepath), np.stack(file_data, axis=0)  # shape (≤50, 20, 6)
     else:
         print(f"[{fname}] Skipped (no valid samples)")
         return None
