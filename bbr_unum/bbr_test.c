@@ -943,9 +943,9 @@ static void bbr_set_state(struct sock *sk, u8 new_state)
 	}
 }
 
-static struct tcp_congestion_ops tcp_bbr_cong_ops __read_mostly = {
+static struct tcp_congestion_ops tcp_bbr_test_cong_ops __read_mostly = {
 	.flags		= TCP_CONG_NON_RESTRICTED,
-	.name		= "bbr",
+	.name		= "bbr_test",
 	.owner		= THIS_MODULE,
 	.init		= bbr_init,
 	.cong_control	= bbr_main,
@@ -958,23 +958,23 @@ static struct tcp_congestion_ops tcp_bbr_cong_ops __read_mostly = {
 	.set_state	= bbr_set_state,
 };
 
-static int __init bbr_register(void)
+static int __init bbr_test_register(void)
 {
 	BUILD_BUG_ON(sizeof(struct bbr) > ICSK_CA_PRIV_SIZE);
-	return tcp_register_congestion_control(&tcp_bbr_cong_ops);
+	return tcp_register_congestion_control(&tcp_bbr_test_cong_ops);
 }
 
-static void __exit bbr_unregister(void)
+static void __exit bbr_test_unregister(void)
 {
-	tcp_unregister_congestion_control(&tcp_bbr_cong_ops);
+	tcp_unregister_congestion_control(&tcp_bbr_test_cong_ops);
 }
 
-module_init(bbr_register);
-module_exit(bbr_unregister);
+module_init(bbr_test_register);
+module_exit(bbr_test_unregister);
 
 MODULE_AUTHOR("Van Jacobson <vanj@google.com>");
 MODULE_AUTHOR("Neal Cardwell <ncardwell@google.com>");
 MODULE_AUTHOR("Yuchung Cheng <ycheng@google.com>");
 MODULE_AUTHOR("Soheil Hassas Yeganeh <soheil@google.com>");
 MODULE_LICENSE("Dual BSD/GPL");
-MODULE_DESCRIPTION("TCP BBR (Bottleneck Bandwidth and RTT)");
+MODULE_DESCRIPTION("TCP BBR_TEST (Bottleneck Bandwidth and RTT, test variant)");
