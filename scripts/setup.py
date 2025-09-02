@@ -76,7 +76,7 @@ def setup_server(server_config):
         "cd ~ && git clone https://github.com/Janecjy/ccBench.git",
         "cd ~/ccBench && git submodule update --init --recursive",
         
-        "cd ~/ccBench && git clone https://github.com/ravinet/mahimahi",
+        "cd ~/ccBench && git clone https://github.com/ravinet/mahimahi && cd mahimahi && git checkout 9ae02fe3cb05f002a077080d45639c237b740d62",
         "cd ~/ccBench/mahimahi && patch -p1 < ../patches/mahimahi.core.v2.2.patch",
         "cd ~/ccBench/mahimahi && patch -p1 < ../patches/mahimahi.extra.aqm.v1.5.patch",
         "cd ~/ccBench/mahimahi && ./autogen.sh && ./configure && make",
