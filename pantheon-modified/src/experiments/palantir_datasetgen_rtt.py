@@ -76,7 +76,7 @@ def process_one_file(filepath):
 
     if file_data:
         print(f"[{fname}] Collected {len(file_data)} valid samples")
-        return np.stack(file_data, axis=0)  # shape (≤50, 20, 6)
+        return os.path.basename(filepath), np.stack(file_data, axis=0)  # shape (≤50, 20, 6)
     else:
         print(f"[{fname}] Skipped (no valid samples)")
         return None
@@ -92,22 +92,41 @@ def build_dataset_rtt_50_sample(trace_dir, save_path):
     with Pool(processes=cpu_count()) as pool:
         results = pool.map(process_one_file, all_txt_files)
 
-    all_data = [r for r in results if r is not None]
+    real_data = []
+    synthetic_data = []
 
-    if all_data:
-        dataset = np.concatenate(all_data, axis=0)
+    for result in results:
+        if result is None:
+            continue
+        fname, data = result
+        if "real" in fname.lower():
+            real_data.append(data)
+        else:
+            synthetic_data.append(data)
+
+    # Save real dataset
+    if real_data:
+        real_dataset = np.concatenate(real_data, axis=0)
     else:
-        dataset = np.empty((0, 20, 6), dtype=np.float32)
+        real_dataset = np.empty((0, 20, 6), dtype=np.float32)
 
-    print("Final dataset shape:", dataset.shape)
+    with open(f"{save_path}_real.p", "wb") as f:
+        pickle.dump(real_dataset, f)
+    print(f"Saved real dataset ({real_dataset.shape}) → {save_path}_real.p")
 
-    with open(save_path, "wb") as f:
-        pickle.dump(dataset, f)
+    # Save synthetic dataset
+    if synthetic_data:
+        synthetic_dataset = np.concatenate(synthetic_data, axis=0)
+    else:
+        synthetic_dataset = np.empty((0, 20, 6), dtype=np.float32)
 
-    print(f"Dataset saved to {save_path}")
+    with open(f"{save_path}_synthetic.p", "wb") as f:
+        pickle.dump(synthetic_dataset, f)
+    print(f"Saved synthetic dataset ({synthetic_dataset.shape}) → {save_path}_synthetic.p")
+
 
 if __name__ == "__main__":
     TRACE_DIR = "/mydata/ccbench-traces"
-    OUTPUT_PATH = "/mydata/ccbench-dataset/6col-rtt-random.p"
+    OUTPUT_PATH = "/mydata/ccbench-dataset/6col-rtt-20"
 
     build_dataset_rtt_50_sample(TRACE_DIR, OUTPUT_PATH)
