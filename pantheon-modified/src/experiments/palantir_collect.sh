@@ -39,7 +39,7 @@ do
             for del in $del_list
             do
                 bdp=$((del*bw/6))
-		for qs in $((bdp/2)) $bdp $((2*bdp))
+		for qs in $bdp
                 do
                     for dl_post in ""
                     do
