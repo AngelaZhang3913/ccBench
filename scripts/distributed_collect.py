@@ -59,7 +59,7 @@ def run_remote_collection(server, schemes):
             # unzip_command,
             "cd ~ && git clone https://github.com/Janecjy/Genet.git || (cd Genet && git pull)",
             "tmux kill-session -t collect || true",  # Kill existing session if any
-            # "cd ~/ccBench/ && git reset --hard && git fetch && git checkout dataset-collection && git pull",
+            "cd ~/ccBench/ && git reset --hard && git fetch && git checkout dataset-collection && git pull",
             # "cd ~/ccBench/pantheon-modified/third_party/pantheon-tunnel/ && chmod +x autogen.sh",
             # "cd ~/ccBench/pantheon-modified/tools/ && chmod +x install_deps.sh && ./install_deps.sh",
             # "cd ~/ccBench/pantheon-modified/ && chmod +x src/experiments/setup.py",
@@ -68,7 +68,7 @@ def run_remote_collection(server, schemes):
             # "cd ~/ccBench/pantheon-modified/src/experiments/ && chmod +x *.sh && chmod +x *.py",
             # "cd ~/ccBench/pantheon-modified/third_party/tcpdatagen/ && chmod +x *.sh && ./build.sh",
             # "rm -rf ~/mahimahi_traces/*",
-            "rm -rf ~/ccBench/mahimahi_traces/*",
+            "rm -rf ~/ccBench/mahimahi_traces/real",
             # "rm -rf ~/ccBench/pantheon-modified/src/experiments/mahimahi_traces/*",
             # "rm -rf ~/ccBench/pantheon-modified/tmp/*",
             "tmux new-session -d -s collect",
