@@ -65,7 +65,7 @@ def run_remote_collection(server, schemes):
             # Start tmux session and generate the bandwidth traces for collection
             "tmux new-session -d -s collect",
             "tmux send-keys -t collect 'source ~/venv/bin/activate' C-m",  # Activate virtual environment
-            "tmux send-keys -t collect 'cd ~/ccBench/pantheon-modified/src/experiments' C-m",
+            "tmux send-keys -t collect 'cd ~/ccBench' C-m",
             "tmux send-keys -t collect 'python ~/ccBench/scripts/generate_mahimahi_traces.py' C-m",  # Set PYTHONPATH
         ]
 
