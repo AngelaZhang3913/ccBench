@@ -60,9 +60,8 @@ def run_remote_collection(server, schemes):
             "cd ~/ccBench/pantheon-modified/ && src/experiments/setup.py --install-deps --all",
             "cd ~/ccBench/pantheon-modified/src/experiments/ && chmod +x *.sh && chmod +x *.py",
             "cd ~/ccBench/pantheon-modified/third_party/tcpdatagen/ && chmod +x *.sh && ./build.sh",
-            "mkdir -p /mydata/ccbench-logs/",
-            "mkdir -p /mydata/ccbench-traces/",
-            
+            "sudo mkdir -p /mydata/ccbench-logs /mydata/ccbench-traces && sudo chown -R $(whoami):$(id -gn) /mydata",
+
             # Start tmux session and generate the bandwidth traces for collection
             "tmux new-session -d -s collect",
             "tmux send-keys -t collect 'source ~/venv/bin/activate' C-m",  # Activate virtual environment
