@@ -1,5 +1,5 @@
 
-time=30
+time=20
 ./system_setup.sh
 ./palantir_clean.sh
 pids=""
@@ -11,13 +11,13 @@ smaller_schemes="reno cubic vegas bbr"
 test_schemes="vegas"
 
 loss_list="0"
-# bw_list="12 24 48 96 192"
+bw_list="12 24 48 96 192"
 test_bw_list="12"
-# del_list="5 10 20 40 80"
+del_list="5 10 20 40 80"
 test_del_list="5"
 
-bw_list=`echo $(seq 6 6 192) | xargs`
-del_list="2 5 10 20 25 40 50 75 80 100 150 200"
+# bw_list=`echo $(seq 6 6 192) | xargs`
+# del_list="2 5 10 20 25 40 50 75 80 100 150 200"
 real_trace_dir="$HOME/ccBench/mahimahi_traces/real"
 real_bw=30
 
@@ -39,7 +39,7 @@ do
             for del in $del_list
             do
                 bdp=$((del*bw/6))
-                for qs in $((bdp/2)) $bdp $((2*bdp)) $((4*bdp)) $((5*bdp)) $((8*bdp)) $((16*bdp))
+		for qs in $((bdp/2)) $bdp $((2*bdp))
                 do
                     for dl_post in ""
                     do
