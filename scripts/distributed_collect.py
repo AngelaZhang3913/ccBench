@@ -18,8 +18,9 @@ servers = config["servers"]
 username = "angelaz"
 
 # List of congestion control schemes
-cc_schemes = ["reno", "pure", "cubic", "vegas", "bbr", "cdg", "hybla", "highspeed", "illinois",
-              "westwood", "yeah", "htcp", "bic", "veno"]
+# cc_schemes = ["reno", "pure", "cubic", "vegas", "bbr", "cdg", "hybla", "highspeed", "illinois",
+              # "westwood", "yeah", "htcp", "bic", "veno"]
+cc_schemes = ["reno", "cubic", "vegas", "bbr"]
 
 num_servers = len(servers)
 schemes_per_server = len(cc_schemes) // num_servers
