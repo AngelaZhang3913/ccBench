@@ -68,6 +68,7 @@ def run_remote_collection(server, schemes):
             # "cd ~/ccBench/pantheon-modified/ && src/experiments/setup.py --install-deps --all",
             # "cd ~/ccBench/pantheon-modified/src/experiments/ && chmod +x *.sh && chmod +x *.py",
             # "cd ~/ccBench/pantheon-modified/third_party/tcpdatagen/ && chmod +x *.sh && ./build.sh",
+            "chmod +x ~/ccBench/pantheon-modified/src/experiments/*.sh",
             # "rm -rf ~/mahimahi_traces/*",
             "rm -rf ~/ccBench/mahimahi_traces/real",
             # "rm -rf ~/ccBench/pantheon-modified/src/experiments/mahimahi_traces/*",
