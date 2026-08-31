@@ -58,7 +58,8 @@ def run_remote_collection(server, schemes):
 
         commands = [
             # unzip_command,
-            "cd ~ && git clone https://github.com/Janecjy/Genet.git || (cd Genet && git pull)",
+            "rm -rf ~/Genet",
+            "cd ~ && git clone https://github.com/GenetProject/Genet.git || (cd Genet && git pull)",
             "tmux kill-session -t collect || true",  # Kill existing session if any
             "cd ~/ccBench/ && git reset --hard && git fetch && git checkout dataset-collection && git pull",
             "cd ~/ccBench/pantheon-modified/third_party/pantheon-tunnel/ && chmod +x autogen.sh",
