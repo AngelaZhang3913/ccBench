@@ -48,7 +48,7 @@ fi
 echo "************************ Running $log *********************************"
 
 python2.7 test.py local --schemes tcpdatagen --uplink-trace $HOME/ccBench/mahimahi_traces/$down --downlink-trace $HOME/ccBench/mahimahi_traces/$upl -t $time \
---extra-mm-link-args "--uplink-queue=droptail --uplink-queue-args=\"packets=$qs\" --downlink-queue=droptail --downlink-queue-args=\"packets=$qs" \
+--extra-mm-link-args "--uplink-queue=droptail --uplink-queue-args=\"packets=$qs\" --downlink-queue=droptail --downlink-queue-args=\"packets=$qs\"" \
 --prepend-mm-cmds " mm-loss uplink $loss mm-loss downlink $loss mm-delay $lat " \
 --setup_time $setup_time --orcalearn 4 --random-order -f $num_of_flows --interval $interval --run-times $num_times --data-dir data/$log  \
 --save 1 --rm 0 --comment \"${down}_${lat}_${qs}_${loss}\" --tcpgen_cc $scheme --bw $bw \
