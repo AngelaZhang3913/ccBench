@@ -63,7 +63,7 @@ def run_remote_collection(server, schemes):
             "cd ~/ccBench/ && git reset --hard && git fetch && git checkout dataset-collection && git pull",
             "cd ~/ccBench/pantheon-modified/third_party/pantheon-tunnel/ && chmod +x autogen.sh",
             "cd ~/ccBench/pantheon-modified/tools/ && chmod +x install_deps.sh && ./install_deps.sh",
-            "cd ~/ccBench/pantheon-modified/ && chmod +x src/experiments/setup.py",
+            # "cd ~/ccBench/pantheon-modified/ && chmod +x src/experiments/setup.py",
             "cd ~/ccBench/pantheon-modified/src/wrappers/ && chmod +x *.py",
             "cd ~/ccBench/pantheon-modified/ && src/experiments/setup.py --install-deps --all",
             "cd ~/ccBench/pantheon-modified/src/experiments/ && chmod +x *.sh && chmod +x *.py",
