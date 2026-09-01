@@ -58,7 +58,7 @@ def run_remote_collection(server, schemes):
 
         commands = [
             # unzip_command,
-            "rm -rf ~/Genet",
+            # "rm -rf ~/Genet",
             "cd ~ && git clone https://github.com/GenetProject/Genet.git || (cd Genet && git pull)",
             "tmux kill-session -t collect || true",  # Kill existing session if any
             "cd ~/ccBench/ && git reset --hard && git fetch && git checkout dataset-collection && git pull",
