@@ -1,5 +1,5 @@
 
-time=20
+time=30
 ./system_setup.sh
 ./palantir_clean.sh
 pids=""
@@ -11,13 +11,13 @@ smaller_schemes="reno cubic vegas bbr"
 test_schemes="vegas"
 
 loss_list="0"
-bw_list="12 24 48 96 192"
+# bw_list="12 24 48 96 192"
 test_bw_list="12"
-del_list="5 10 20 40 80"
+# del_list="5 10 20 40 80"
 test_del_list="5"
 
-# bw_list=`echo $(seq 6 6 192) | xargs`
-# del_list="2 5 10 20 25 40 50 75 80 100 150 200"
+bw_list=`echo $(seq 6 6 192) | xargs`
+del_list="2 5 10 20 25 40 50 75 80 100 150 200"
 real_trace_dir="$HOME/ccBench/mahimahi_traces/real"
 real_bw=30
 
@@ -39,7 +39,7 @@ do
             for del in $del_list
             do
                 bdp=$((del*bw/6))
-		for qs in $bdp
+                for qs in $((bdp/2)) $bdp $((2*bdp)) $((4*bdp)) $((5*bdp)) $((8*bdp)) $((16*bdp))
                 do
                     for dl_post in ""
                     do
@@ -104,13 +104,13 @@ do
         if [ -d "$real_trace_dir" ]; then
             cpu_num=$((sys_cpu_cnt/6))
             real_trace_flag="true"
-            for trace in $(ls $real_trace_dir | head -10) 
+            for trace in $(ls $real_trace_dir)
             do
                 real_link="real/$trace"
                 for del in $del_list
                 do
                     bdp=$((del*real_bw/6))
-                    for qs in $bdp
+                    for qs in $((bdp/2)) $bdp $((2*bdp)) $((4*bdp)) $((5*bdp)) $((8*bdp)) $((16*bdp))
                     do
                         echo "./cc_dataset_gen_solo.sh $cc single-flow-scenario 1 1 0 $del $qs "$loss" $real_link $time $real_bw $real_bw $real_trace_flag"
                         ./cc_dataset_gen_solo.sh $cc single-flow-scenario 1 1 0 $del $qs "$loss" $real_link $time $real_bw $real_bw $real_trace_flag &
