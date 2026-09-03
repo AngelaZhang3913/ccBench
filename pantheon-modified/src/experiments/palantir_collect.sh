@@ -133,4 +133,12 @@ do
         fi
     done
 done
-sleep 30
+
+# Wait for every experiment in the final partial batch.
+for pid in $pids
+do
+    wait "$pid"
+done
+
+# Move the final traces and logs out of the intermediate directories.
+./palantir_clean.sh
