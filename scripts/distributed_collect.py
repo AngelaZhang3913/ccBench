@@ -18,7 +18,7 @@ servers = config["servers"]
 username = "angelaz"
 
 # List of congestion control schemes
-cc_schemes = ["reno", "pure", "cubic", "vegas", "bbr", "cdg", "hybla", "highspeed", "illinois",
+cc_schemes = ["reno", "cubic", "vegas", "bbr", "cdg", "hybla", "highspeed", "illinois",
               "westwood", "yeah", "htcp", "bic", "veno"]
 # cc_schemes = ["reno", "cubic", "vegas", "bbr"]
 
