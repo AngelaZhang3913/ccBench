@@ -17,12 +17,27 @@ done
 CMT
 
 # Rsync logs only if 'data/' exists
+
+# Preserve only metadata and summary statistics; discard bulky packet logs.
 if [ -d "data" ]; then
-    mkdir -p /mydata/ccbench-logs  # Ensure destination exists
-    rsync -av --remove-source-files data/ /mydata/ccbench-logs/
-    find data/ -type d -empty -delete  # Remove empty directories
+    mkdir -p /mydata/ccbench-logs
+
+    if rsync -avm --remove-source-files \
+        --include='*/' \
+        --include='pantheon_metadata.json' \
+        --include='*_stats_run*.log' \
+        --exclude='*' \
+        data/ /mydata/ccbench-logs/
+    then
+        # These remaining files are the bulky datalink, acklink, and mm logs.
+        find data/ -type f -delete
+        find data/ -depth -type d -empty -delete
+    else
+        echo "Error: failed to preserve metadata and statistics."
+        exit 1
+    fi
 else
-    echo "Warning: 'data/' directory does not exist. Skipping rsync."
+    echo "Warning: 'data/' directory does not exist. Skipping cleanup."
 fi
 
 # Move dataset files if they exist
